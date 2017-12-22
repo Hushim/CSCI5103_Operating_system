@@ -1,0 +1,1152 @@
+./configure --ostree=/home/xuxx0987/repo/csci5103/os161/root && \
+bmake && \
+bmake install
+Checking for <err.h>... yes
+Checking for ntohll()...no
+Generating defs.mk.
+(cd kern && bmake includes)
+../mk/installheaders.sh include/kern ../build/install/include/kern
+../mk/installheaders.sh arch/mips/include/kern ../build/install/include/kern/mips
+(cd userland && bmake includes)
+../mk/installheaders.sh include ../build/install/include
+../mk/installheaders.sh include/sys ../build/install/include/sys
+../mk/installheaders.sh include/test ../build/install/include/test
+../mk/installheaders.sh include/types ../build/install/include/types
+[ -h ../build/install/include/machine ] ||  ln -sf kern/machine ../build/install/include/machine
+[ -h ../build/install/include/kern/machine ] ||  ln -sf mips ../build/install/include/kern/machine
+(cd lib/hostcompat && bmake includes)
+[ -h ../../../build/install/hostinclude/kern ] ||  ln -sf ../include/kern ../../../build/install/hostinclude/kern
+(cd userland && bmake build)
+(cd lib && bmake build)
+(cd crt0 && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M mips/crt0.S | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/lib/crt0/.deptmp
+mv -f ../../../build/userland/lib/crt0/.deptmp ../../../build/userland/lib/crt0/.depend
+bmake all-local
+bmake install-staging-local
+(cd libc && bmake build)
+bmake ../../../build/userland/lib/libc/syscalls.S
+rm -f ../../../build/userland/lib/libc/syscalls.S ../../../build/userland/lib/libc/syscalls.S.tmp
+echo '/* Automatically generated; do not edit */' > ../../../build/userland/lib/libc/syscalls.S.tmp
+cat arch/mips/syscalls-mips.S >> ../../../build/userland/lib/libc/syscalls.S.tmp
+syscalls/gensyscalls.sh < ../../../build/install/include/kern/syscall.h >> ../../../build/userland/lib/libc/syscalls.S.tmp
+mv -f ../../../build/userland/lib/libc/syscalls.S.tmp ../../../build/userland/lib/libc/syscalls.S
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M ../../../common/libc/printf/__printf.c  ../../../common/libc/printf/snprintf.c stdio/__puts.c  stdio/getchar.c  stdio/printf.c  stdio/putchar.c  stdio/puts.c stdlib/abort.c  ../../../common/libc/stdlib/atoi.c  stdlib/exit.c  stdlib/getenv.c  stdlib/malloc.c  stdlib/qsort.c  stdlib/random.c  stdlib/system.c ../../../common/libc/string/bzero.c  string/memcmp.c  ../../../common/libc/string/memcpy.c  ../../../common/libc/string/memmove.c  ../../../common/libc/string/memset.c  ../../../common/libc/string/strcat.c  ../../../common/libc/string/strchr.c  ../../../common/libc/string/strcmp.c  ../../../common/libc/string/strcpy.c  string/strerror.c  ../../../common/libc/string/strlen.c  ../../../common/libc/string/strrchr.c  string/strtok.c  ../../../common/libc/string/strtok_r.c time/time.c ../../../build/userland/lib/libc/syscalls.S ../../../common/gcc-millicode/adddi3.c  ../../../common/gcc-millicode/anddi3.c  ../../../common/gcc-millicode/ashldi3.c  ../../../common/gcc-millicode/ashrdi3.c  ../../../common/gcc-millicode/cmpdi2.c  ../../../common/gcc-millicode/divdi3.c  ../../../common/gcc-millicode/iordi3.c  ../../../common/gcc-millicode/lshldi3.c  ../../../common/gcc-millicode/lshrdi3.c  ../../../common/gcc-millicode/moddi3.c  ../../../common/gcc-millicode/muldi3.c  ../../../common/gcc-millicode/negdi2.c  ../../../common/gcc-millicode/notdi2.c  ../../../common/gcc-millicode/qdivrem.c  ../../../common/gcc-millicode/subdi3.c  ../../../common/gcc-millicode/ucmpdi2.c  ../../../common/gcc-millicode/udivdi3.c  ../../../common/gcc-millicode/umoddi3.c  ../../../common/gcc-millicode/xordi3.c unix/__assert.c  unix/err.c  unix/errno.c  unix/execvp.c  unix/getcwd.c  ../../../common/libc/arch/mips/setjmp.S | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/lib/libc/.deptmp
+mv -f ../../../build/userland/lib/libc/.deptmp ../../../build/userland/lib/libc/.depend
+bmake all-local
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -c ../../../build/userland/lib/libc/syscalls.S -o ../../../build/userland/lib/libc/syscalls.o
+rm -f ../../../build/userland/lib/libc/libc.a
+mips-harvard-os161-ar -cq ../../../build/userland/lib/libc/libc.a  ../../../build/userland/lib/libc/__printf.o ../../../build/userland/lib/libc/snprintf.o ../../../build/userland/lib/libc/__puts.o ../../../build/userland/lib/libc/getchar.o ../../../build/userland/lib/libc/printf.o ../../../build/userland/lib/libc/putchar.o ../../../build/userland/lib/libc/puts.o ../../../build/userland/lib/libc/abort.o ../../../build/userland/lib/libc/atoi.o ../../../build/userland/lib/libc/exit.o ../../../build/userland/lib/libc/getenv.o ../../../build/userland/lib/libc/malloc.o ../../../build/userland/lib/libc/qsort.o ../../../build/userland/lib/libc/random.o ../../../build/userland/lib/libc/system.o ../../../build/userland/lib/libc/bzero.o ../../../build/userland/lib/libc/memcmp.o ../../../build/userland/lib/libc/memcpy.o ../../../build/userland/lib/libc/memmove.o ../../../build/userland/lib/libc/memset.o ../../../build/userland/lib/libc/strcat.o ../../../build/userland/lib/libc/strchr.o ../../../build/userland/lib/libc/strcmp.o ../../../build/userland/lib/libc/strcpy.o ../../../build/userland/lib/libc/strerror.o ../../../build/userland/lib/libc/strlen.o ../../../build/userland/lib/libc/strrchr.o ../../../build/userland/lib/libc/strtok.o ../../../build/userland/lib/libc/strtok_r.o ../../../build/userland/lib/libc/time.o ../../../build/userland/lib/libc/syscalls.o ../../../build/userland/lib/libc/adddi3.o ../../../build/userland/lib/libc/anddi3.o ../../../build/userland/lib/libc/ashldi3.o ../../../build/userland/lib/libc/ashrdi3.o ../../../build/userland/lib/libc/cmpdi2.o ../../../build/userland/lib/libc/divdi3.o ../../../build/userland/lib/libc/iordi3.o ../../../build/userland/lib/libc/lshldi3.o ../../../build/userland/lib/libc/lshrdi3.o ../../../build/userland/lib/libc/moddi3.o ../../../build/userland/lib/libc/muldi3.o ../../../build/userland/lib/libc/negdi2.o ../../../build/userland/lib/libc/notdi2.o ../../../build/userland/lib/libc/qdivrem.o ../../../build/userland/lib/libc/subdi3.o ../../../build/userland/lib/libc/ucmpdi2.o ../../../build/userland/lib/libc/udivdi3.o ../../../build/userland/lib/libc/umoddi3.o ../../../build/userland/lib/libc/xordi3.o ../../../build/userland/lib/libc/__assert.o ../../../build/userland/lib/libc/err.o ../../../build/userland/lib/libc/errno.o ../../../build/userland/lib/libc/execvp.o ../../../build/userland/lib/libc/getcwd.o ../../../build/userland/lib/libc/setjmp.o
+mips-harvard-os161-ranlib ../../../build/userland/lib/libc/libc.a
+bmake install-staging-local
+rm -f ../../../build/install/lib/libc.a
+ln ../../../build/userland/lib/libc/libc.a ../../../build/install/lib/libc.a ||  cp ../../../build/userland/lib/libc/libc.a ../../../build/install/lib/libc.a
+(cd libtest && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M triple.c quint.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/lib/libtest/.deptmp
+mv -f ../../../build/userland/lib/libtest/.deptmp ../../../build/userland/lib/libtest/.depend
+bmake all-local
+bmake install-staging-local
+(cd hostcompat && bmake build)
+gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror  -I../../../build/install/hostinclude -DDECLARE_NTOHLL -DNEED_NTOHLL -DHOST -MM err.c ntohll.c time.c hostcompat.c | ../../../mk/fixdepends.sh '../../../build/install' host  > ../../../build/userland/lib/hostcompat/.hostdeptmp
+mv -f ../../../build/userland/lib/hostcompat/.hostdeptmp ../../../build/userland/lib/hostcompat/.hostdepend
+bmake all-local
+bmake install-staging-local
+(cd bin && bmake build)
+(cd true && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M true.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/true/.deptmp
+mv -f ../../../build/userland/bin/true/.deptmp ../../../build/userland/bin/true/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/true/true.o   -lc -o ../../../build/userland/bin/true/true
+bmake install-staging-local
+rm -f ../../../build/install/bin/true
+ln ../../../build/userland/bin/true/true ../../../build/install/bin/true ||  cp ../../../build/userland/bin/true/true ../../../build/install/bin/true
+(cd false && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M false.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/false/.deptmp
+mv -f ../../../build/userland/bin/false/.deptmp ../../../build/userland/bin/false/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/false/false.o   -lc -o ../../../build/userland/bin/false/false
+bmake install-staging-local
+rm -f ../../../build/install/bin/false
+ln ../../../build/userland/bin/false/false ../../../build/install/bin/false ||  cp ../../../build/userland/bin/false/false ../../../build/install/bin/false
+(cd sync && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M sync.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/sync/.deptmp
+mv -f ../../../build/userland/bin/sync/.deptmp ../../../build/userland/bin/sync/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/sync/sync.o   -lc -o ../../../build/userland/bin/sync/sync
+bmake install-staging-local
+rm -f ../../../build/install/bin/sync
+ln ../../../build/userland/bin/sync/sync ../../../build/install/bin/sync ||  cp ../../../build/userland/bin/sync/sync ../../../build/install/bin/sync
+(cd mkdir && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M mkdir.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/mkdir/.deptmp
+mv -f ../../../build/userland/bin/mkdir/.deptmp ../../../build/userland/bin/mkdir/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/mkdir/mkdir.o   -lc -o ../../../build/userland/bin/mkdir/mkdir
+bmake install-staging-local
+rm -f ../../../build/install/bin/mkdir
+ln ../../../build/userland/bin/mkdir/mkdir ../../../build/install/bin/mkdir ||  cp ../../../build/userland/bin/mkdir/mkdir ../../../build/install/bin/mkdir
+(cd rmdir && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M rmdir.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/rmdir/.deptmp
+mv -f ../../../build/userland/bin/rmdir/.deptmp ../../../build/userland/bin/rmdir/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/rmdir/rmdir.o   -lc -o ../../../build/userland/bin/rmdir/rmdir
+bmake install-staging-local
+rm -f ../../../build/install/bin/rmdir
+ln ../../../build/userland/bin/rmdir/rmdir ../../../build/install/bin/rmdir ||  cp ../../../build/userland/bin/rmdir/rmdir ../../../build/install/bin/rmdir
+(cd pwd && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M pwd.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/pwd/.deptmp
+mv -f ../../../build/userland/bin/pwd/.deptmp ../../../build/userland/bin/pwd/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/pwd/pwd.o   -lc -o ../../../build/userland/bin/pwd/pwd
+bmake install-staging-local
+rm -f ../../../build/install/bin/pwd
+ln ../../../build/userland/bin/pwd/pwd ../../../build/install/bin/pwd ||  cp ../../../build/userland/bin/pwd/pwd ../../../build/install/bin/pwd
+(cd cat && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M cat.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/cat/.deptmp
+mv -f ../../../build/userland/bin/cat/.deptmp ../../../build/userland/bin/cat/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/cat/cat.o   -lc -o ../../../build/userland/bin/cat/cat
+bmake install-staging-local
+rm -f ../../../build/install/bin/cat
+ln ../../../build/userland/bin/cat/cat ../../../build/install/bin/cat ||  cp ../../../build/userland/bin/cat/cat ../../../build/install/bin/cat
+(cd cp && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M cp.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/cp/.deptmp
+mv -f ../../../build/userland/bin/cp/.deptmp ../../../build/userland/bin/cp/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/cp/cp.o   -lc -o ../../../build/userland/bin/cp/cp
+bmake install-staging-local
+rm -f ../../../build/install/bin/cp
+ln ../../../build/userland/bin/cp/cp ../../../build/install/bin/cp ||  cp ../../../build/userland/bin/cp/cp ../../../build/install/bin/cp
+(cd ln && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M ln.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/ln/.deptmp
+mv -f ../../../build/userland/bin/ln/.deptmp ../../../build/userland/bin/ln/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/ln/ln.o   -lc -o ../../../build/userland/bin/ln/ln
+bmake install-staging-local
+rm -f ../../../build/install/bin/ln
+ln ../../../build/userland/bin/ln/ln ../../../build/install/bin/ln ||  cp ../../../build/userland/bin/ln/ln ../../../build/install/bin/ln
+(cd mv && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M mv.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/mv/.deptmp
+mv -f ../../../build/userland/bin/mv/.deptmp ../../../build/userland/bin/mv/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/mv/mv.o   -lc -o ../../../build/userland/bin/mv/mv
+bmake install-staging-local
+rm -f ../../../build/install/bin/mv
+ln ../../../build/userland/bin/mv/mv ../../../build/install/bin/mv ||  cp ../../../build/userland/bin/mv/mv ../../../build/install/bin/mv
+(cd rm && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M rm.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/rm/.deptmp
+mv -f ../../../build/userland/bin/rm/.deptmp ../../../build/userland/bin/rm/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/rm/rm.o   -lc -o ../../../build/userland/bin/rm/rm
+bmake install-staging-local
+rm -f ../../../build/install/bin/rm
+ln ../../../build/userland/bin/rm/rm ../../../build/install/bin/rm ||  cp ../../../build/userland/bin/rm/rm ../../../build/install/bin/rm
+(cd ls && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M ls.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/ls/.deptmp
+mv -f ../../../build/userland/bin/ls/.deptmp ../../../build/userland/bin/ls/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/ls/ls.o   -lc -o ../../../build/userland/bin/ls/ls
+bmake install-staging-local
+rm -f ../../../build/install/bin/ls
+ln ../../../build/userland/bin/ls/ls ../../../build/install/bin/ls ||  cp ../../../build/userland/bin/ls/ls ../../../build/install/bin/ls
+(cd sh && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M sh.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/sh/.deptmp
+mv -f ../../../build/userland/bin/sh/.deptmp ../../../build/userland/bin/sh/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/sh/sh.o   -lc -o ../../../build/userland/bin/sh/sh
+bmake install-staging-local
+rm -f ../../../build/install/bin/sh
+ln ../../../build/userland/bin/sh/sh ../../../build/install/bin/sh ||  cp ../../../build/userland/bin/sh/sh ../../../build/install/bin/sh
+(cd tac && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M tac.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/bin/tac/.deptmp
+mv -f ../../../build/userland/bin/tac/.deptmp ../../../build/userland/bin/tac/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/bin/tac/tac.o   -lc -o ../../../build/userland/bin/tac/tac
+bmake install-staging-local
+rm -f ../../../build/install/bin/tac
+ln ../../../build/userland/bin/tac/tac ../../../build/install/bin/tac ||  cp ../../../build/userland/bin/tac/tac ../../../build/install/bin/tac
+(cd sbin && bmake build)
+(cd reboot && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M reboot.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/sbin/reboot/.deptmp
+mv -f ../../../build/userland/sbin/reboot/.deptmp ../../../build/userland/sbin/reboot/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/sbin/reboot/reboot.o   -lc -o ../../../build/userland/sbin/reboot/reboot
+bmake install-staging-local
+rm -f ../../../build/install/sbin/reboot
+ln ../../../build/userland/sbin/reboot/reboot ../../../build/install/sbin/reboot ||  cp ../../../build/userland/sbin/reboot/reboot ../../../build/install/sbin/reboot
+(cd halt && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M halt.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/sbin/halt/.deptmp
+mv -f ../../../build/userland/sbin/halt/.deptmp ../../../build/userland/sbin/halt/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/sbin/halt/halt.o   -lc -o ../../../build/userland/sbin/halt/halt
+bmake install-staging-local
+rm -f ../../../build/install/sbin/halt
+ln ../../../build/userland/sbin/halt/halt ../../../build/install/sbin/halt ||  cp ../../../build/userland/sbin/halt/halt ../../../build/install/sbin/halt
+(cd poweroff && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M poweroff.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/sbin/poweroff/.deptmp
+mv -f ../../../build/userland/sbin/poweroff/.deptmp ../../../build/userland/sbin/poweroff/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/sbin/poweroff/poweroff.o   -lc -o ../../../build/userland/sbin/poweroff/poweroff
+bmake install-staging-local
+rm -f ../../../build/install/sbin/poweroff
+ln ../../../build/userland/sbin/poweroff/poweroff ../../../build/install/sbin/poweroff ||  cp ../../../build/userland/sbin/poweroff/poweroff ../../../build/install/sbin/poweroff
+(cd mksfs && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M mksfs.c disk.c support.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/sbin/mksfs/.deptmp
+mv -f ../../../build/userland/sbin/mksfs/.deptmp ../../../build/userland/sbin/mksfs/.depend
+gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror  -I../../../build/install/hostinclude -DDECLARE_NTOHLL -DHOST -MM mksfs.c disk.c support.c | ../../../mk/fixdepends.sh '../../../build/install' host  > ../../../build/userland/sbin/mksfs/.hostdeptmp
+mv -f ../../../build/userland/sbin/mksfs/.hostdeptmp ../../../build/userland/sbin/mksfs/.hostdepend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/sbin/mksfs/mksfs.o ../../../build/userland/sbin/mksfs/disk.o ../../../build/userland/sbin/mksfs/support.o   -lc -o ../../../build/userland/sbin/mksfs/mksfs
+bmake install-staging-local
+rm -f ../../../build/install/sbin/mksfs
+ln ../../../build/userland/sbin/mksfs/mksfs ../../../build/install/sbin/mksfs ||  cp ../../../build/userland/sbin/mksfs/mksfs ../../../build/install/sbin/mksfs
+(cd dumpsfs && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc -I../mksfs  -I../../../build/install/include -M dumpsfs.c ../mksfs/disk.c ../mksfs/support.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/sbin/dumpsfs/.deptmp
+mv -f ../../../build/userland/sbin/dumpsfs/.deptmp ../../../build/userland/sbin/dumpsfs/.depend
+gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror  -I../../../build/install/hostinclude -DDECLARE_NTOHLL -I../mksfs -DHOST -MM dumpsfs.c ../mksfs/disk.c ../mksfs/support.c | ../../../mk/fixdepends.sh '../../../build/install' host  > ../../../build/userland/sbin/dumpsfs/.hostdeptmp
+mv -f ../../../build/userland/sbin/dumpsfs/.hostdeptmp ../../../build/userland/sbin/dumpsfs/.hostdepend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/sbin/dumpsfs/dumpsfs.o ../../../build/userland/sbin/dumpsfs/disk.o ../../../build/userland/sbin/dumpsfs/support.o   -lc -o ../../../build/userland/sbin/dumpsfs/dumpsfs
+bmake install-staging-local
+rm -f ../../../build/install/sbin/dumpsfs
+ln ../../../build/userland/sbin/dumpsfs/dumpsfs ../../../build/install/sbin/dumpsfs ||  cp ../../../build/userland/sbin/dumpsfs/dumpsfs ../../../build/install/sbin/dumpsfs
+(cd sfsck && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc -I../mksfs  -I../../../build/install/include -M main.c pass1.c pass2.c  inode.c freemap.c sb.c  sfs.c utils.c  ../mksfs/disk.c ../mksfs/support.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/sbin/sfsck/.deptmp
+mv -f ../../../build/userland/sbin/sfsck/.deptmp ../../../build/userland/sbin/sfsck/.depend
+gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror  -I../../../build/install/hostinclude -DDECLARE_NTOHLL -I../mksfs -DHOST -MM main.c pass1.c pass2.c  inode.c freemap.c sb.c  sfs.c utils.c  ../mksfs/disk.c ../mksfs/support.c | ../../../mk/fixdepends.sh '../../../build/install' host  > ../../../build/userland/sbin/sfsck/.hostdeptmp
+mv -f ../../../build/userland/sbin/sfsck/.hostdeptmp ../../../build/userland/sbin/sfsck/.hostdepend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/sbin/sfsck/main.o ../../../build/userland/sbin/sfsck/pass1.o ../../../build/userland/sbin/sfsck/pass2.o ../../../build/userland/sbin/sfsck/inode.o ../../../build/userland/sbin/sfsck/freemap.o ../../../build/userland/sbin/sfsck/sb.o ../../../build/userland/sbin/sfsck/sfs.o ../../../build/userland/sbin/sfsck/utils.o ../../../build/userland/sbin/sfsck/disk.o ../../../build/userland/sbin/sfsck/support.o   -lc -o ../../../build/userland/sbin/sfsck/sfsck
+bmake install-staging-local
+rm -f ../../../build/install/sbin/sfsck
+ln ../../../build/userland/sbin/sfsck/sfsck ../../../build/install/sbin/sfsck ||  cp ../../../build/userland/sbin/sfsck/sfsck ../../../build/install/sbin/sfsck
+(cd testbin && bmake build)
+(cd add && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M add.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/add/.deptmp
+mv -f ../../../build/userland/testbin/add/.deptmp ../../../build/userland/testbin/add/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/add/add.o   -lc -o ../../../build/userland/testbin/add/add
+bmake install-staging-local
+rm -f ../../../build/install/testbin/add
+ln ../../../build/userland/testbin/add/add ../../../build/install/testbin/add ||  cp ../../../build/userland/testbin/add/add ../../../build/install/testbin/add
+(cd argtest && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M argtest.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/argtest/.deptmp
+mv -f ../../../build/userland/testbin/argtest/.deptmp ../../../build/userland/testbin/argtest/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/argtest/argtest.o   -lc -o ../../../build/userland/testbin/argtest/argtest
+bmake install-staging-local
+rm -f ../../../build/install/testbin/argtest
+ln ../../../build/userland/testbin/argtest/argtest ../../../build/install/testbin/argtest ||  cp ../../../build/userland/testbin/argtest/argtest ../../../build/install/testbin/argtest
+(cd badcall && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M bad_execv.c  bad_waitpid.c  bad_open.c  bad_read.c  bad_write.c  bad_close.c  bad_reboot.c  bad_sbrk.c  bad_ioctl.c  bad_lseek.c  bad_fsync.c  bad_ftruncate.c  bad_stat.c  bad_remove.c  bad_rename.c  bad_link.c  bad_mkdir.c  bad_rmdir.c  bad_chdir.c  bad_getdirentry.c  bad_symlink.c  bad_readlink.c  bad_dup2.c  bad_pipe.c  bad_time.c  bad_getcwd.c  common_buf.c  common_fds.c  common_path.c  report.c  driver.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/badcall/.deptmp
+mv -f ../../../build/userland/testbin/badcall/.deptmp ../../../build/userland/testbin/badcall/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/badcall/bad_execv.o ../../../build/userland/testbin/badcall/bad_waitpid.o ../../../build/userland/testbin/badcall/bad_open.o ../../../build/userland/testbin/badcall/bad_read.o ../../../build/userland/testbin/badcall/bad_write.o ../../../build/userland/testbin/badcall/bad_close.o ../../../build/userland/testbin/badcall/bad_reboot.o ../../../build/userland/testbin/badcall/bad_sbrk.o ../../../build/userland/testbin/badcall/bad_ioctl.o ../../../build/userland/testbin/badcall/bad_lseek.o ../../../build/userland/testbin/badcall/bad_fsync.o ../../../build/userland/testbin/badcall/bad_ftruncate.o ../../../build/userland/testbin/badcall/bad_stat.o ../../../build/userland/testbin/badcall/bad_remove.o ../../../build/userland/testbin/badcall/bad_rename.o ../../../build/userland/testbin/badcall/bad_link.o ../../../build/userland/testbin/badcall/bad_mkdir.o ../../../build/userland/testbin/badcall/bad_rmdir.o ../../../build/userland/testbin/badcall/bad_chdir.o ../../../build/userland/testbin/badcall/bad_getdirentry.o ../../../build/userland/testbin/badcall/bad_symlink.o ../../../build/userland/testbin/badcall/bad_readlink.o ../../../build/userland/testbin/badcall/bad_dup2.o ../../../build/userland/testbin/badcall/bad_pipe.o ../../../build/userland/testbin/badcall/bad_time.o ../../../build/userland/testbin/badcall/bad_getcwd.o ../../../build/userland/testbin/badcall/common_buf.o ../../../build/userland/testbin/badcall/common_fds.o ../../../build/userland/testbin/badcall/common_path.o ../../../build/userland/testbin/badcall/report.o ../../../build/userland/testbin/badcall/driver.o   -lc -o ../../../build/userland/testbin/badcall/badcall
+bmake install-staging-local
+rm -f ../../../build/install/testbin/badcall
+ln ../../../build/userland/testbin/badcall/badcall ../../../build/install/testbin/badcall ||  cp ../../../build/userland/testbin/badcall/badcall ../../../build/install/testbin/badcall
+(cd bigexec && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M bigexec.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/bigexec/.deptmp
+mv -f ../../../build/userland/testbin/bigexec/.deptmp ../../../build/userland/testbin/bigexec/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/bigexec/bigexec.o   -lc -o ../../../build/userland/testbin/bigexec/bigexec
+bmake install-staging-local
+rm -f ../../../build/install/testbin/bigexec
+ln ../../../build/userland/testbin/bigexec/bigexec ../../../build/install/testbin/bigexec ||  cp ../../../build/userland/testbin/bigexec/bigexec ../../../build/install/testbin/bigexec
+(cd bigfile && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M bigfile.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/bigfile/.deptmp
+mv -f ../../../build/userland/testbin/bigfile/.deptmp ../../../build/userland/testbin/bigfile/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/bigfile/bigfile.o   -lc -o ../../../build/userland/testbin/bigfile/bigfile
+bmake install-staging-local
+rm -f ../../../build/install/testbin/bigfile
+ln ../../../build/userland/testbin/bigfile/bigfile ../../../build/install/testbin/bigfile ||  cp ../../../build/userland/testbin/bigfile/bigfile ../../../build/install/testbin/bigfile
+(cd bigfork && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M bigfork.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/bigfork/.deptmp
+mv -f ../../../build/userland/testbin/bigfork/.deptmp ../../../build/userland/testbin/bigfork/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/bigfork/bigfork.o   -lc -o ../../../build/userland/testbin/bigfork/bigfork
+bmake install-staging-local
+rm -f ../../../build/install/testbin/bigfork
+ln ../../../build/userland/testbin/bigfork/bigfork ../../../build/install/testbin/bigfork ||  cp ../../../build/userland/testbin/bigfork/bigfork ../../../build/install/testbin/bigfork
+(cd bigseek && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M bigseek.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/bigseek/.deptmp
+mv -f ../../../build/userland/testbin/bigseek/.deptmp ../../../build/userland/testbin/bigseek/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/bigseek/bigseek.o   -lc -o ../../../build/userland/testbin/bigseek/bigseek
+bmake install-staging-local
+rm -f ../../../build/install/testbin/bigseek
+ln ../../../build/userland/testbin/bigseek/bigseek ../../../build/install/testbin/bigseek ||  cp ../../../build/userland/testbin/bigseek/bigseek ../../../build/install/testbin/bigseek
+(cd bloat && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M bloat.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/bloat/.deptmp
+mv -f ../../../build/userland/testbin/bloat/.deptmp ../../../build/userland/testbin/bloat/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/bloat/bloat.o   -lc -o ../../../build/userland/testbin/bloat/bloat
+bmake install-staging-local
+rm -f ../../../build/install/testbin/bloat
+ln ../../../build/userland/testbin/bloat/bloat ../../../build/install/testbin/bloat ||  cp ../../../build/userland/testbin/bloat/bloat ../../../build/install/testbin/bloat
+(cd conman && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M conman.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/conman/.deptmp
+mv -f ../../../build/userland/testbin/conman/.deptmp ../../../build/userland/testbin/conman/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/conman/conman.o   -lc -o ../../../build/userland/testbin/conman/conman
+bmake install-staging-local
+rm -f ../../../build/install/testbin/conman
+ln ../../../build/userland/testbin/conman/conman ../../../build/install/testbin/conman ||  cp ../../../build/userland/testbin/conman/conman ../../../build/install/testbin/conman
+(cd crash && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M crash.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/crash/.deptmp
+mv -f ../../../build/userland/testbin/crash/.deptmp ../../../build/userland/testbin/crash/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/crash/crash.o   -lc -o ../../../build/userland/testbin/crash/crash
+bmake install-staging-local
+rm -f ../../../build/install/testbin/crash
+ln ../../../build/userland/testbin/crash/crash ../../../build/install/testbin/crash ||  cp ../../../build/userland/testbin/crash/crash ../../../build/install/testbin/crash
+(cd ctest && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M ctest.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/ctest/.deptmp
+mv -f ../../../build/userland/testbin/ctest/.deptmp ../../../build/userland/testbin/ctest/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/ctest/ctest.o   -lc -o ../../../build/userland/testbin/ctest/ctest
+bmake install-staging-local
+rm -f ../../../build/install/testbin/ctest
+ln ../../../build/userland/testbin/ctest/ctest ../../../build/install/testbin/ctest ||  cp ../../../build/userland/testbin/ctest/ctest ../../../build/install/testbin/ctest
+(cd dirconc && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M dirconc.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/dirconc/.deptmp
+mv -f ../../../build/userland/testbin/dirconc/.deptmp ../../../build/userland/testbin/dirconc/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/dirconc/dirconc.o   -lc -o ../../../build/userland/testbin/dirconc/dirconc
+bmake install-staging-local
+rm -f ../../../build/install/testbin/dirconc
+ln ../../../build/userland/testbin/dirconc/dirconc ../../../build/install/testbin/dirconc ||  cp ../../../build/userland/testbin/dirconc/dirconc ../../../build/install/testbin/dirconc
+(cd dirseek && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M dirseek.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/dirseek/.deptmp
+mv -f ../../../build/userland/testbin/dirseek/.deptmp ../../../build/userland/testbin/dirseek/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/dirseek/dirseek.o   -lc -o ../../../build/userland/testbin/dirseek/dirseek
+bmake install-staging-local
+rm -f ../../../build/install/testbin/dirseek
+ln ../../../build/userland/testbin/dirseek/dirseek ../../../build/install/testbin/dirseek ||  cp ../../../build/userland/testbin/dirseek/dirseek ../../../build/install/testbin/dirseek
+(cd dirtest && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M dirtest.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/dirtest/.deptmp
+mv -f ../../../build/userland/testbin/dirtest/.deptmp ../../../build/userland/testbin/dirtest/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/dirtest/dirtest.o   -lc -o ../../../build/userland/testbin/dirtest/dirtest
+bmake install-staging-local
+rm -f ../../../build/install/testbin/dirtest
+ln ../../../build/userland/testbin/dirtest/dirtest ../../../build/install/testbin/dirtest ||  cp ../../../build/userland/testbin/dirtest/dirtest ../../../build/install/testbin/dirtest
+(cd f_test && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M f_test.c f_read.c f_write.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/f_test/.deptmp
+mv -f ../../../build/userland/testbin/f_test/.deptmp ../../../build/userland/testbin/f_test/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/f_test/f_test.o ../../../build/userland/testbin/f_test/f_read.o ../../../build/userland/testbin/f_test/f_write.o   -lc -o ../../../build/userland/testbin/f_test/f_test
+bmake install-staging-local
+rm -f ../../../build/install/testbin/f_test
+ln ../../../build/userland/testbin/f_test/f_test ../../../build/install/testbin/f_test ||  cp ../../../build/userland/testbin/f_test/f_test ../../../build/install/testbin/f_test
+(cd factorial && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M factorial.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/factorial/.deptmp
+mv -f ../../../build/userland/testbin/factorial/.deptmp ../../../build/userland/testbin/factorial/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/factorial/factorial.o   -lc -o ../../../build/userland/testbin/factorial/factorial
+bmake install-staging-local
+rm -f ../../../build/install/testbin/factorial
+ln ../../../build/userland/testbin/factorial/factorial ../../../build/install/testbin/factorial ||  cp ../../../build/userland/testbin/factorial/factorial ../../../build/install/testbin/factorial
+(cd farm && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M farm.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/farm/.deptmp
+mv -f ../../../build/userland/testbin/farm/.deptmp ../../../build/userland/testbin/farm/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/farm/farm.o   -lc -o ../../../build/userland/testbin/farm/farm
+bmake install-staging-local
+rm -f ../../../build/install/testbin/farm
+ln ../../../build/userland/testbin/farm/farm ../../../build/install/testbin/farm ||  cp ../../../build/userland/testbin/farm/farm ../../../build/install/testbin/farm
+(cd faulter && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M faulter.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/faulter/.deptmp
+mv -f ../../../build/userland/testbin/faulter/.deptmp ../../../build/userland/testbin/faulter/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/faulter/faulter.o   -lc -o ../../../build/userland/testbin/faulter/faulter
+bmake install-staging-local
+rm -f ../../../build/install/testbin/faulter
+ln ../../../build/userland/testbin/faulter/faulter ../../../build/install/testbin/faulter ||  cp ../../../build/userland/testbin/faulter/faulter ../../../build/install/testbin/faulter
+(cd filetest && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M filetest.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/filetest/.deptmp
+mv -f ../../../build/userland/testbin/filetest/.deptmp ../../../build/userland/testbin/filetest/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/filetest/filetest.o   -lc -o ../../../build/userland/testbin/filetest/filetest
+bmake install-staging-local
+rm -f ../../../build/install/testbin/filetest
+ln ../../../build/userland/testbin/filetest/filetest ../../../build/install/testbin/filetest ||  cp ../../../build/userland/testbin/filetest/filetest ../../../build/install/testbin/filetest
+(cd forkbomb && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M forkbomb.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/forkbomb/.deptmp
+mv -f ../../../build/userland/testbin/forkbomb/.deptmp ../../../build/userland/testbin/forkbomb/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/forkbomb/forkbomb.o   -lc -o ../../../build/userland/testbin/forkbomb/forkbomb
+bmake install-staging-local
+rm -f ../../../build/install/testbin/forkbomb
+ln ../../../build/userland/testbin/forkbomb/forkbomb ../../../build/install/testbin/forkbomb ||  cp ../../../build/userland/testbin/forkbomb/forkbomb ../../../build/install/testbin/forkbomb
+(cd forktest && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M forktest.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/forktest/.deptmp
+mv -f ../../../build/userland/testbin/forktest/.deptmp ../../../build/userland/testbin/forktest/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/forktest/forktest.o   -lc -o ../../../build/userland/testbin/forktest/forktest
+bmake install-staging-local
+rm -f ../../../build/install/testbin/forktest
+ln ../../../build/userland/testbin/forktest/forktest ../../../build/install/testbin/forktest ||  cp ../../../build/userland/testbin/forktest/forktest ../../../build/install/testbin/forktest
+(cd frack && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M main.c workloads.c ops.c do.c check.c pool.c data.c name.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/frack/.deptmp
+mv -f ../../../build/userland/testbin/frack/.deptmp ../../../build/userland/testbin/frack/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/frack/main.o ../../../build/userland/testbin/frack/workloads.o ../../../build/userland/testbin/frack/ops.o ../../../build/userland/testbin/frack/do.o ../../../build/userland/testbin/frack/check.o ../../../build/userland/testbin/frack/pool.o ../../../build/userland/testbin/frack/data.o ../../../build/userland/testbin/frack/name.o   -lc -o ../../../build/userland/testbin/frack/frack
+bmake install-staging-local
+rm -f ../../../build/install/testbin/frack
+ln ../../../build/userland/testbin/frack/frack ../../../build/install/testbin/frack ||  cp ../../../build/userland/testbin/frack/frack ../../../build/install/testbin/frack
+(cd guzzle && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M guzzle.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/guzzle/.deptmp
+mv -f ../../../build/userland/testbin/guzzle/.deptmp ../../../build/userland/testbin/guzzle/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/guzzle/guzzle.o   -lc -o ../../../build/userland/testbin/guzzle/guzzle
+bmake install-staging-local
+rm -f ../../../build/install/testbin/guzzle
+ln ../../../build/userland/testbin/guzzle/guzzle ../../../build/install/testbin/guzzle ||  cp ../../../build/userland/testbin/guzzle/guzzle ../../../build/install/testbin/guzzle
+(cd hash && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M hash.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/hash/.deptmp
+mv -f ../../../build/userland/testbin/hash/.deptmp ../../../build/userland/testbin/hash/.depend
+gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror  -I../../../build/install/hostinclude -DDECLARE_NTOHLL -DHOST -MM hash.c | ../../../mk/fixdepends.sh '../../../build/install' host  > ../../../build/userland/testbin/hash/.hostdeptmp
+mv -f ../../../build/userland/testbin/hash/.hostdeptmp ../../../build/userland/testbin/hash/.hostdepend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/hash/hash.o   -lc -o ../../../build/userland/testbin/hash/hash
+bmake install-staging-local
+rm -f ../../../build/install/testbin/hash
+ln ../../../build/userland/testbin/hash/hash ../../../build/install/testbin/hash ||  cp ../../../build/userland/testbin/hash/hash ../../../build/install/testbin/hash
+(cd hog && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M hog.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/hog/.deptmp
+mv -f ../../../build/userland/testbin/hog/.deptmp ../../../build/userland/testbin/hog/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/hog/hog.o   -lc -o ../../../build/userland/testbin/hog/hog
+bmake install-staging-local
+rm -f ../../../build/install/testbin/hog
+ln ../../../build/userland/testbin/hog/hog ../../../build/install/testbin/hog ||  cp ../../../build/userland/testbin/hog/hog ../../../build/install/testbin/hog
+(cd huge && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M huge.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/huge/.deptmp
+mv -f ../../../build/userland/testbin/huge/.deptmp ../../../build/userland/testbin/huge/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/huge/huge.o   -lc -o ../../../build/userland/testbin/huge/huge
+bmake install-staging-local
+rm -f ../../../build/install/testbin/huge
+ln ../../../build/userland/testbin/huge/huge ../../../build/install/testbin/huge ||  cp ../../../build/userland/testbin/huge/huge ../../../build/install/testbin/huge
+(cd kitchen && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M kitchen.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/kitchen/.deptmp
+mv -f ../../../build/userland/testbin/kitchen/.deptmp ../../../build/userland/testbin/kitchen/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/kitchen/kitchen.o   -lc -o ../../../build/userland/testbin/kitchen/kitchen
+bmake install-staging-local
+rm -f ../../../build/install/testbin/kitchen
+ln ../../../build/userland/testbin/kitchen/kitchen ../../../build/install/testbin/kitchen ||  cp ../../../build/userland/testbin/kitchen/kitchen ../../../build/install/testbin/kitchen
+(cd malloctest && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M malloctest.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/malloctest/.deptmp
+mv -f ../../../build/userland/testbin/malloctest/.deptmp ../../../build/userland/testbin/malloctest/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/malloctest/malloctest.o   -lc -o ../../../build/userland/testbin/malloctest/malloctest
+bmake install-staging-local
+rm -f ../../../build/install/testbin/malloctest
+ln ../../../build/userland/testbin/malloctest/malloctest ../../../build/install/testbin/malloctest ||  cp ../../../build/userland/testbin/malloctest/malloctest ../../../build/install/testbin/malloctest
+(cd matmult && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M matmult.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/matmult/.deptmp
+mv -f ../../../build/userland/testbin/matmult/.deptmp ../../../build/userland/testbin/matmult/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/matmult/matmult.o   -lc -o ../../../build/userland/testbin/matmult/matmult
+bmake install-staging-local
+rm -f ../../../build/install/testbin/matmult
+ln ../../../build/userland/testbin/matmult/matmult ../../../build/install/testbin/matmult ||  cp ../../../build/userland/testbin/matmult/matmult ../../../build/install/testbin/matmult
+(cd multiexec && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M multiexec.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/multiexec/.deptmp
+mv -f ../../../build/userland/testbin/multiexec/.deptmp ../../../build/userland/testbin/multiexec/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/multiexec/multiexec.o   -lc -o ../../../build/userland/testbin/multiexec/multiexec
+bmake install-staging-local
+rm -f ../../../build/install/testbin/multiexec
+ln ../../../build/userland/testbin/multiexec/multiexec ../../../build/install/testbin/multiexec ||  cp ../../../build/userland/testbin/multiexec/multiexec ../../../build/install/testbin/multiexec
+(cd palin && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M palin.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/palin/.deptmp
+mv -f ../../../build/userland/testbin/palin/.deptmp ../../../build/userland/testbin/palin/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/palin/palin.o   -lc -o ../../../build/userland/testbin/palin/palin
+bmake install-staging-local
+rm -f ../../../build/install/testbin/palin
+ln ../../../build/userland/testbin/palin/palin ../../../build/install/testbin/palin ||  cp ../../../build/userland/testbin/palin/palin ../../../build/install/testbin/palin
+(cd parallelvm && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M parallelvm.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/parallelvm/.deptmp
+mv -f ../../../build/userland/testbin/parallelvm/.deptmp ../../../build/userland/testbin/parallelvm/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/parallelvm/parallelvm.o   -lc -o ../../../build/userland/testbin/parallelvm/parallelvm
+bmake install-staging-local
+rm -f ../../../build/install/testbin/parallelvm
+ln ../../../build/userland/testbin/parallelvm/parallelvm ../../../build/install/testbin/parallelvm ||  cp ../../../build/userland/testbin/parallelvm/parallelvm ../../../build/install/testbin/parallelvm
+(cd poisondisk && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc -I../../sbin/mksfs  -I../../../build/install/include -M poisondisk.c  ../../sbin/mksfs/disk.c ../../sbin/mksfs/support.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/poisondisk/.deptmp
+mv -f ../../../build/userland/testbin/poisondisk/.deptmp ../../../build/userland/testbin/poisondisk/.depend
+gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror  -I../../../build/install/hostinclude -DDECLARE_NTOHLL -I../../sbin/mksfs -DHOST -MM poisondisk.c  ../../sbin/mksfs/disk.c ../../sbin/mksfs/support.c | ../../../mk/fixdepends.sh '../../../build/install' host  > ../../../build/userland/testbin/poisondisk/.hostdeptmp
+mv -f ../../../build/userland/testbin/poisondisk/.hostdeptmp ../../../build/userland/testbin/poisondisk/.hostdepend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/poisondisk/poisondisk.o ../../../build/userland/testbin/poisondisk/disk.o ../../../build/userland/testbin/poisondisk/support.o   -lc -o ../../../build/userland/testbin/poisondisk/poisondisk
+bmake install-staging-local
+rm -f ../../../build/install/testbin/poisondisk
+ln ../../../build/userland/testbin/poisondisk/poisondisk ../../../build/install/testbin/poisondisk ||  cp ../../../build/userland/testbin/poisondisk/poisondisk ../../../build/install/testbin/poisondisk
+(cd psort && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M psort.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/psort/.deptmp
+mv -f ../../../build/userland/testbin/psort/.deptmp ../../../build/userland/testbin/psort/.depend
+gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror  -I../../../build/install/hostinclude -DDECLARE_NTOHLL -DHOST -MM psort.c | ../../../mk/fixdepends.sh '../../../build/install' host  > ../../../build/userland/testbin/psort/.hostdeptmp
+mv -f ../../../build/userland/testbin/psort/.hostdeptmp ../../../build/userland/testbin/psort/.hostdepend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/psort/psort.o   -lc -o ../../../build/userland/testbin/psort/psort
+bmake install-staging-local
+rm -f ../../../build/install/testbin/psort
+ln ../../../build/userland/testbin/psort/psort ../../../build/install/testbin/psort ||  cp ../../../build/userland/testbin/psort/psort ../../../build/install/testbin/psort
+(cd quinthuge && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M quinthuge.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/quinthuge/.deptmp
+mv -f ../../../build/userland/testbin/quinthuge/.deptmp ../../../build/userland/testbin/quinthuge/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/quinthuge/quinthuge.o -ltest  -lc -o ../../../build/userland/testbin/quinthuge/quinthuge
+bmake install-staging-local
+rm -f ../../../build/install/testbin/quinthuge
+ln ../../../build/userland/testbin/quinthuge/quinthuge ../../../build/install/testbin/quinthuge ||  cp ../../../build/userland/testbin/quinthuge/quinthuge ../../../build/install/testbin/quinthuge
+(cd quintmat && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M quintmat.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/quintmat/.deptmp
+mv -f ../../../build/userland/testbin/quintmat/.deptmp ../../../build/userland/testbin/quintmat/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/quintmat/quintmat.o -ltest  -lc -o ../../../build/userland/testbin/quintmat/quintmat
+bmake install-staging-local
+rm -f ../../../build/install/testbin/quintmat
+ln ../../../build/userland/testbin/quintmat/quintmat ../../../build/install/testbin/quintmat ||  cp ../../../build/userland/testbin/quintmat/quintmat ../../../build/install/testbin/quintmat
+(cd quintsort && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M quintsort.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/quintsort/.deptmp
+mv -f ../../../build/userland/testbin/quintsort/.deptmp ../../../build/userland/testbin/quintsort/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/quintsort/quintsort.o -ltest  -lc -o ../../../build/userland/testbin/quintsort/quintsort
+bmake install-staging-local
+rm -f ../../../build/install/testbin/quintsort
+ln ../../../build/userland/testbin/quintsort/quintsort ../../../build/install/testbin/quintsort ||  cp ../../../build/userland/testbin/quintsort/quintsort ../../../build/install/testbin/quintsort
+(cd randcall && bmake build)
+bmake ../../../build/userland/testbin/randcall/calls.c
+`../../../build/userland/testbin/randcall/calls.c' is up to date.
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc -I.  -I../../../build/install/include -M ../../../build/userland/testbin/randcall/calls.c main.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/randcall/.deptmp
+mv -f ../../../build/userland/testbin/randcall/.deptmp ../../../build/userland/testbin/randcall/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/randcall/calls.o ../../../build/userland/testbin/randcall/main.o   -lc -o ../../../build/userland/testbin/randcall/randcall
+bmake install-staging-local
+rm -f ../../../build/install/testbin/randcall
+ln ../../../build/userland/testbin/randcall/randcall ../../../build/install/testbin/randcall ||  cp ../../../build/userland/testbin/randcall/randcall ../../../build/install/testbin/randcall
+(cd redirect && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M redirect.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/redirect/.deptmp
+mv -f ../../../build/userland/testbin/redirect/.deptmp ../../../build/userland/testbin/redirect/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/redirect/redirect.o   -lc -o ../../../build/userland/testbin/redirect/redirect
+bmake install-staging-local
+rm -f ../../../build/install/testbin/redirect
+ln ../../../build/userland/testbin/redirect/redirect ../../../build/install/testbin/redirect ||  cp ../../../build/userland/testbin/redirect/redirect ../../../build/install/testbin/redirect
+(cd rmdirtest && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M rmdirtest.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/rmdirtest/.deptmp
+mv -f ../../../build/userland/testbin/rmdirtest/.deptmp ../../../build/userland/testbin/rmdirtest/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/rmdirtest/rmdirtest.o   -lc -o ../../../build/userland/testbin/rmdirtest/rmdirtest
+bmake install-staging-local
+rm -f ../../../build/install/testbin/rmdirtest
+ln ../../../build/userland/testbin/rmdirtest/rmdirtest ../../../build/install/testbin/rmdirtest ||  cp ../../../build/userland/testbin/rmdirtest/rmdirtest ../../../build/install/testbin/rmdirtest
+(cd rmtest && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M rmtest.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/rmtest/.deptmp
+mv -f ../../../build/userland/testbin/rmtest/.deptmp ../../../build/userland/testbin/rmtest/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/rmtest/rmtest.o   -lc -o ../../../build/userland/testbin/rmtest/rmtest
+bmake install-staging-local
+rm -f ../../../build/install/testbin/rmtest
+ln ../../../build/userland/testbin/rmtest/rmtest ../../../build/install/testbin/rmtest ||  cp ../../../build/userland/testbin/rmtest/rmtest ../../../build/install/testbin/rmtest
+(cd sbrktest && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M sbrktest.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/sbrktest/.deptmp
+mv -f ../../../build/userland/testbin/sbrktest/.deptmp ../../../build/userland/testbin/sbrktest/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/sbrktest/sbrktest.o   -lc -o ../../../build/userland/testbin/sbrktest/sbrktest
+bmake install-staging-local
+rm -f ../../../build/install/testbin/sbrktest
+ln ../../../build/userland/testbin/sbrktest/sbrktest ../../../build/install/testbin/sbrktest ||  cp ../../../build/userland/testbin/sbrktest/sbrktest ../../../build/install/testbin/sbrktest
+(cd schedpong && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M main.c think.c grind.c pong.c results.c usem.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/schedpong/.deptmp
+mv -f ../../../build/userland/testbin/schedpong/.deptmp ../../../build/userland/testbin/schedpong/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/schedpong/main.o ../../../build/userland/testbin/schedpong/think.o ../../../build/userland/testbin/schedpong/grind.o ../../../build/userland/testbin/schedpong/pong.o ../../../build/userland/testbin/schedpong/results.o ../../../build/userland/testbin/schedpong/usem.o   -lc -o ../../../build/userland/testbin/schedpong/schedpong
+bmake install-staging-local
+rm -f ../../../build/install/testbin/schedpong
+ln ../../../build/userland/testbin/schedpong/schedpong ../../../build/install/testbin/schedpong ||  cp ../../../build/userland/testbin/schedpong/schedpong ../../../build/install/testbin/schedpong
+(cd sink && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M sink.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/sink/.deptmp
+mv -f ../../../build/userland/testbin/sink/.deptmp ../../../build/userland/testbin/sink/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/sink/sink.o   -lc -o ../../../build/userland/testbin/sink/sink
+bmake install-staging-local
+rm -f ../../../build/install/testbin/sink
+ln ../../../build/userland/testbin/sink/sink ../../../build/install/testbin/sink ||  cp ../../../build/userland/testbin/sink/sink ../../../build/install/testbin/sink
+(cd sort && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M sort.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/sort/.deptmp
+mv -f ../../../build/userland/testbin/sort/.deptmp ../../../build/userland/testbin/sort/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/sort/sort.o   -lc -o ../../../build/userland/testbin/sort/sort
+bmake install-staging-local
+rm -f ../../../build/install/testbin/sort
+ln ../../../build/userland/testbin/sort/sort ../../../build/install/testbin/sort ||  cp ../../../build/userland/testbin/sort/sort ../../../build/install/testbin/sort
+(cd sparsefile && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M sparsefile.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/sparsefile/.deptmp
+mv -f ../../../build/userland/testbin/sparsefile/.deptmp ../../../build/userland/testbin/sparsefile/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/sparsefile/sparsefile.o   -lc -o ../../../build/userland/testbin/sparsefile/sparsefile
+bmake install-staging-local
+rm -f ../../../build/install/testbin/sparsefile
+ln ../../../build/userland/testbin/sparsefile/sparsefile ../../../build/install/testbin/sparsefile ||  cp ../../../build/userland/testbin/sparsefile/sparsefile ../../../build/install/testbin/sparsefile
+(cd sty && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M sty.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/sty/.deptmp
+mv -f ../../../build/userland/testbin/sty/.deptmp ../../../build/userland/testbin/sty/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/sty/sty.o   -lc -o ../../../build/userland/testbin/sty/sty
+bmake install-staging-local
+rm -f ../../../build/install/testbin/sty
+ln ../../../build/userland/testbin/sty/sty ../../../build/install/testbin/sty ||  cp ../../../build/userland/testbin/sty/sty ../../../build/install/testbin/sty
+(cd tail && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M tail.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/tail/.deptmp
+mv -f ../../../build/userland/testbin/tail/.deptmp ../../../build/userland/testbin/tail/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/tail/tail.o   -lc -o ../../../build/userland/testbin/tail/tail
+bmake install-staging-local
+rm -f ../../../build/install/testbin/tail
+ln ../../../build/userland/testbin/tail/tail ../../../build/install/testbin/tail ||  cp ../../../build/userland/testbin/tail/tail ../../../build/install/testbin/tail
+(cd tictac && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M tictac.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/tictac/.deptmp
+mv -f ../../../build/userland/testbin/tictac/.deptmp ../../../build/userland/testbin/tictac/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/tictac/tictac.o   -lc -o ../../../build/userland/testbin/tictac/tictac
+bmake install-staging-local
+rm -f ../../../build/install/testbin/tictac
+ln ../../../build/userland/testbin/tictac/tictac ../../../build/install/testbin/tictac ||  cp ../../../build/userland/testbin/tictac/tictac ../../../build/install/testbin/tictac
+(cd triplehuge && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M triplehuge.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/triplehuge/.deptmp
+mv -f ../../../build/userland/testbin/triplehuge/.deptmp ../../../build/userland/testbin/triplehuge/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/triplehuge/triplehuge.o -ltest  -lc -o ../../../build/userland/testbin/triplehuge/triplehuge
+bmake install-staging-local
+rm -f ../../../build/install/testbin/triplehuge
+ln ../../../build/userland/testbin/triplehuge/triplehuge ../../../build/install/testbin/triplehuge ||  cp ../../../build/userland/testbin/triplehuge/triplehuge ../../../build/install/testbin/triplehuge
+(cd triplemat && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M triplemat.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/triplemat/.deptmp
+mv -f ../../../build/userland/testbin/triplemat/.deptmp ../../../build/userland/testbin/triplemat/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/triplemat/triplemat.o -ltest  -lc -o ../../../build/userland/testbin/triplemat/triplemat
+bmake install-staging-local
+rm -f ../../../build/install/testbin/triplemat
+ln ../../../build/userland/testbin/triplemat/triplemat ../../../build/install/testbin/triplemat ||  cp ../../../build/userland/testbin/triplemat/triplemat ../../../build/install/testbin/triplemat
+(cd triplesort && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M triplesort.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/triplesort/.deptmp
+mv -f ../../../build/userland/testbin/triplesort/.deptmp ../../../build/userland/testbin/triplesort/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/triplesort/triplesort.o -ltest  -lc -o ../../../build/userland/testbin/triplesort/triplesort
+bmake install-staging-local
+rm -f ../../../build/install/testbin/triplesort
+ln ../../../build/userland/testbin/triplesort/triplesort ../../../build/install/testbin/triplesort ||  cp ../../../build/userland/testbin/triplesort/triplesort ../../../build/install/testbin/triplesort
+(cd usemtest && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M usemtest.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/usemtest/.deptmp
+mv -f ../../../build/userland/testbin/usemtest/.deptmp ../../../build/userland/testbin/usemtest/.depend
+gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror  -I../../../build/install/hostinclude -DDECLARE_NTOHLL -DHOST -MM usemtest.c | ../../../mk/fixdepends.sh '../../../build/install' host  > ../../../build/userland/testbin/usemtest/.hostdeptmp
+mv -f ../../../build/userland/testbin/usemtest/.hostdeptmp ../../../build/userland/testbin/usemtest/.hostdepend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/usemtest/usemtest.o   -lc -o ../../../build/userland/testbin/usemtest/usemtest
+bmake install-staging-local
+rm -f ../../../build/install/testbin/usemtest
+ln ../../../build/userland/testbin/usemtest/usemtest ../../../build/install/testbin/usemtest ||  cp ../../../build/userland/testbin/usemtest/usemtest ../../../build/install/testbin/usemtest
+(cd zero && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M zero.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/zero/.deptmp
+mv -f ../../../build/userland/testbin/zero/.deptmp ../../../build/userland/testbin/zero/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/zero/zero.o   -lc -o ../../../build/userland/testbin/zero/zero
+bmake install-staging-local
+rm -f ../../../build/install/testbin/zero
+ln ../../../build/userland/testbin/zero/zero ../../../build/install/testbin/zero ||  cp ../../../build/userland/testbin/zero/zero ../../../build/install/testbin/zero
+(cd getpidtest && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M getpidtest.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/getpidtest/.deptmp
+mv -f ../../../build/userland/testbin/getpidtest/.deptmp ../../../build/userland/testbin/getpidtest/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/getpidtest/getpidtest.o   -lc -o ../../../build/userland/testbin/getpidtest/getpidtest
+bmake install-staging-local
+rm -f ../../../build/install/testbin/getpidtest
+ln ../../../build/userland/testbin/getpidtest/getpidtest ../../../build/install/testbin/getpidtest ||  cp ../../../build/userland/testbin/getpidtest/getpidtest ../../../build/install/testbin/getpidtest
+(cd execvtest && bmake build)
+mips-harvard-os161-gcc -O2 -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -nostdinc  -I../../../build/install/include -M execvtest.c | ../../../mk/fixdepends.sh '../../../build/install' native  > ../../../build/userland/testbin/execvtest/.deptmp
+mv -f ../../../build/userland/testbin/execvtest/.deptmp ../../../build/userland/testbin/execvtest/.depend
+bmake all-local
+mips-harvard-os161-gcc  -nostdlib -L../../../build/install/lib ../../../build/install/lib/crt0.o  ../../../build/userland/testbin/execvtest/execvtest.o   -lc -o ../../../build/userland/testbin/execvtest/execvtest
+bmake install-staging-local
+rm -f ../../../build/install/testbin/execvtest
+ln ../../../build/userland/testbin/execvtest/execvtest ../../../build/install/testbin/execvtest ||  cp ../../../build/userland/testbin/execvtest/execvtest ../../../build/install/testbin/execvtest
+bmake all-local
+bmake install-staging-local
+(cd man && bmake install-staging)
+(cd bin && bmake install-staging)
+(cd sbin && bmake install-staging)
+(cd testbin && bmake install-staging)
+(cd libc && bmake install-staging)
+(cd syscall && bmake install-staging)
+(cd dev && bmake install-staging)
+(cd misc && bmake install-staging)
+(cd testscripts && bmake build)
+bmake all-local
+bmake install-staging-local
+(cd ./build/install && tar -cf - .) | (cd /home/xuxx0987/repo/csci5103/os161/root && tar -xvf -)
+./
+./bin/
+./bin/false
+./bin/ls
+./bin/rmdir
+./bin/tac
+./bin/cp
+./bin/ln
+./bin/cat
+./bin/rm
+./bin/sync
+./bin/true
+./bin/mv
+./bin/pwd
+./bin/sh
+./bin/mkdir
+./testscripts/
+./testscripts/runtest.py
+./testscripts/test.py
+./lib/
+./lib/libc.a
+./lib/crt0.o
+./lib/libtest.a
+./sbin/
+./sbin/mksfs
+./sbin/sfsck
+./sbin/halt
+./sbin/dumpsfs
+./sbin/reboot
+./sbin/poweroff
+./hostbin/
+./hostbin/host-dumpsfs
+./hostbin/host-usemtest
+./hostbin/host-mksfs
+./hostbin/host-hash
+./hostbin/host-sfsck
+./hostbin/host-poisondisk
+./hostbin/host-psort
+./hostinclude/
+./hostinclude/hostcompat.h
+./hostinclude/kern
+./include/
+./include/stdint.h
+./include/string.h
+./include/signal.h
+./include/stdbool.h
+./include/fcntl.h
+./include/stdarg.h
+./include/types/
+./include/types/size_t.h
+./include/test/
+./include/test/triple.h
+./include/test/quint.h
+./include/limits.h
+./include/unistd.h
+./include/sys/
+./include/sys/ioctl.h
+./include/sys/types.h
+./include/sys/wait.h
+./include/sys/cdefs.h
+./include/sys/null.h
+./include/sys/stat.h
+./include/sys/endian.h
+./include/sys/reboot.h
+./include/machine
+./include/errno.h
+./include/stdio.h
+./include/stdlib.h
+./include/time.h
+./include/kern/
+./include/kern/unistd.h
+./include/kern/time.h
+./include/kern/seek.h
+./include/kern/stattypes.h
+./include/kern/mips/
+./include/kern/mips/endian.h
+./include/kern/mips/regdefs.h
+./include/kern/mips/setjmp.h
+./include/kern/mips/types.h
+./include/kern/mips/signal.h
+./include/kern/machine
+./include/kern/limits.h
+./include/kern/fcntl.h
+./include/kern/errmsg.h
+./include/kern/wait.h
+./include/kern/signal.h
+./include/kern/iovec.h
+./include/kern/endian.h
+./include/kern/stat.h
+./include/kern/reboot.h
+./include/kern/resource.h
+./include/kern/sfs.h
+./include/kern/syscall.h
+./include/kern/types.h
+./include/kern/errno.h
+./include/kern/socket.h
+./include/kern/ioctl.h
+./include/setjmp.h
+./include/assert.h
+./include/err.h
+./testbin/
+./testbin/conman
+./testbin/kitchen
+./testbin/triplesort
+./testbin/matmult
+./testbin/dirseek
+./testbin/f_test
+./testbin/farm
+./testbin/tail
+./testbin/sink
+./testbin/hash
+./testbin/triplehuge
+./testbin/guzzle
+./testbin/forkbomb
+./testbin/palin
+./testbin/bigfile
+./testbin/bigexec
+./testbin/quintmat
+./testbin/dirconc
+./testbin/hog
+./testbin/faulter
+./testbin/execvtest
+./testbin/malloctest
+./testbin/sty
+./testbin/factorial
+./testbin/schedpong
+./testbin/randcall
+./testbin/frack
+./testbin/tictac
+./testbin/bloat
+./testbin/forktest
+./testbin/rmtest
+./testbin/getpidtest
+./testbin/quintsort
+./testbin/sbrktest
+./testbin/quinthuge
+./testbin/crash
+./testbin/add
+./testbin/parallelvm
+./testbin/poisondisk
+./testbin/dirtest
+./testbin/psort
+./testbin/triplemat
+./testbin/zero
+./testbin/sparsefile
+./testbin/badcall
+./testbin/bigseek
+./testbin/rmdirtest
+./testbin/huge
+./testbin/argtest
+./testbin/bigfork
+./testbin/sort
+./testbin/ctest
+./testbin/filetest
+./testbin/usemtest
+./testbin/multiexec
+./testbin/redirect
+./man/
+./man/dev/
+./man/dev/lamebus.html
+./man/dev/con.html
+./man/dev/lser.html
+./man/dev/rtclock.html
+./man/dev/random.html
+./man/dev/lhd.html
+./man/dev/lrandom.html
+./man/dev/lnet.html
+./man/dev/lscreen.html
+./man/dev/index.html
+./man/dev/null.html
+./man/dev/emu.html
+./man/dev/beep.html
+./man/dev/ltimer.html
+./man/man.css
+./man/syscall/
+./man/syscall/sync.html
+./man/syscall/index.html
+./man/syscall/ftruncate.html
+./man/syscall/pipe.html
+./man/syscall/fork.html
+./man/syscall/ioctl.html
+./man/syscall/link.html
+./man/syscall/errno.html
+./man/syscall/dup2.html
+./man/syscall/mkdir.html
+./man/syscall/rename.html
+./man/syscall/_exit.html
+./man/syscall/close.html
+./man/syscall/fstat.html
+./man/syscall/sbrk.html
+./man/syscall/remove.html
+./man/syscall/__getcwd.html
+./man/syscall/symlink.html
+./man/syscall/waitpid.html
+./man/syscall/stat.html
+./man/syscall/chdir.html
+./man/syscall/getdirentry.html
+./man/syscall/getpid.html
+./man/syscall/readlink.html
+./man/syscall/write.html
+./man/syscall/__time.html
+./man/syscall/lseek.html
+./man/syscall/rmdir.html
+./man/syscall/read.html
+./man/syscall/execv.html
+./man/syscall/reboot.html
+./man/syscall/lstat.html
+./man/syscall/open.html
+./man/syscall/fsync.html
+./man/libc/
+./man/libc/random.html
+./man/libc/strcat.html
+./man/libc/__vprintf.html
+./man/libc/putchar.html
+./man/libc/calloc.html
+./man/libc/puts.html
+./man/libc/strerror.html
+./man/libc/strcmp.html
+./man/libc/strlen.html
+./man/libc/memset.html
+./man/libc/printf.html
+./man/libc/exit.html
+./man/libc/getcwd.html
+./man/libc/strchr.html
+./man/libc/bzero.html
+./man/libc/err.html
+./man/libc/strrchr.html
+./man/libc/atoi.html
+./man/libc/malloc.html
+./man/libc/memmove.html
+./man/libc/free.html
+./man/libc/getchar.html
+./man/libc/system.html
+./man/libc/assert.html
+./man/libc/memcpy.html
+./man/libc/strtok_r.html
+./man/libc/warn.html
+./man/libc/snprintf.html
+./man/libc/realloc.html
+./man/libc/setjmp.html
+./man/libc/strtok.html
+./man/libc/strcpy.html
+./man/libc/abort.html
+./man/libc/stdarg.html
+./man/libc/index.html
+./man/libc/time.html
+./man/manindex.css
+./man/sbin/
+./man/sbin/poweroff.html
+./man/sbin/halt.html
+./man/sbin/mksfs.html
+./man/sbin/dumpsfs.html
+./man/sbin/index.html
+./man/sbin/reboot.html
+./man/bin/
+./man/bin/index.html
+./man/bin/sh.html
+./man/bin/cat.html
+./man/bin/ln.html
+./man/bin/ls.html
+./man/bin/rm.html
+./man/bin/mkdir.html
+./man/bin/false.html
+./man/bin/mv.html
+./man/bin/pwd.html
+./man/bin/true.html
+./man/bin/rmdir.html
+./man/bin/sync.html
+./man/bin/tac.html
+./man/bin/cp.html
+./man/index.html
+./man/misc/
+./man/misc/index.html
+./man/testbin/
+./man/testbin/badcall.html
+./man/testbin/sink.html
+./man/testbin/crash.html
+./man/testbin/faulter.html
+./man/testbin/bigfile.html
+./man/testbin/forkbomb.html
+./man/testbin/guzzle.html
+./man/testbin/index.html
+./man/testbin/forktest.html
+./man/testbin/hash.html
+./man/testbin/triplesort.html
+./man/testbin/sort.html
+./man/testbin/filetest.html
+./man/testbin/sty.html
+./man/testbin/tictac.html
+./man/testbin/add.html
+./man/testbin/rmtest.html
+./man/testbin/hog.html
+./man/testbin/randcall.html
+./man/testbin/conman.html
+./man/testbin/rmdirtest.html
+./man/testbin/kitchen.html
+./man/testbin/tail.html
+./man/testbin/huge.html
+./man/testbin/triplehuge.html
+./man/testbin/matmult.html
+./man/testbin/palin.html
+./man/testbin/triplemat.html
+./man/testbin/argtest.html
+./man/testbin/farm.html
+./man/testbin/userthreads.html
+./man/testbin/f_test.html
+./man/testbin/dirtest.html
+./man/testbin/ctest.html
+./man/testbin/dirseek.html
+./man/testbin/malloctest.html
+cd ./kern/conf && \
+./config DUMBVM  && \
+cd ../../
+Configuration DUMBVM
+Generating files... opt-dumbvm.h opt-netfs.h opt-net.h opt-noasserts.h opt-semfs.h opt-sfs.h files.mk Makefile autoconf.h autoconf.c
+Configuration in ../compile/DUMBVM done
+Remember to make depend
+cd ./kern/compile/DUMBVM && \
+bmake depend && \
+bmake && \
+bmake install && \
+cd ../../../
+bmake includelinks
+`includelinks' is up to date.
+rm -f .depend.* || true
+bmake realdepend
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/printf/__printf.c > .depend.__printf.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/printf/snprintf.c > .depend.snprintf.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/stdlib/atoi.c > .depend.atoi.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/string/bzero.c > .depend.bzero.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/string/memcpy.c > .depend.memcpy.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/string/memmove.c > .depend.memmove.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/string/memset.c > .depend.memset.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/string/strcat.c > .depend.strcat.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/string/strchr.c > .depend.strchr.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/string/strcmp.c > .depend.strcmp.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/string/strcpy.c > .depend.strcpy.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/string/strlen.c > .depend.strlen.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/string/strrchr.c > .depend.strrchr.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/string/strtok_r.c > .depend.strtok_r.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../compile/DUMBVM/autoconf.c > .depend.autoconf.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/generic/beep.c > .depend.beep.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/generic/console.c > .depend.console.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/generic/random.c > .depend.random.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/generic/rtclock.c > .depend.rtclock.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/beep_ltimer.c > .depend.beep_ltimer.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/con_lser.c > .depend.con_lser.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/emu_att.c > .depend.emu_att.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/emu.c > .depend.emu.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/lamebus.c > .depend.lamebus.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/lhd_att.c > .depend.lhd_att.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/lhd.c > .depend.lhd.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/lrandom_att.c > .depend.lrandom_att.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/lrandom.c > .depend.lrandom.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/lser_att.c > .depend.lser_att.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/lser.c > .depend.lser.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/ltimer_att.c > .depend.ltimer_att.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/ltimer.c > .depend.ltimer.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/ltrace_att.c > .depend.ltrace_att.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/ltrace.c > .depend.ltrace.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/random_lrandom.c > .depend.random_lrandom.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../dev/lamebus/rtclock_ltimer.c > .depend.rtclock_ltimer.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../fs/semfs/semfs_fsops.c > .depend.semfs_fsops.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../fs/semfs/semfs_obj.c > .depend.semfs_obj.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../fs/semfs/semfs_vnops.c > .depend.semfs_vnops.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../fs/sfs/sfs_balloc.c > .depend.sfs_balloc.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../fs/sfs/sfs_bmap.c > .depend.sfs_bmap.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../fs/sfs/sfs_dir.c > .depend.sfs_dir.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../fs/sfs/sfs_fsops.c > .depend.sfs_fsops.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../fs/sfs/sfs_inode.c > .depend.sfs_inode.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../fs/sfs/sfs_io.c > .depend.sfs_io.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../fs/sfs/sfs_vnops.c > .depend.sfs_vnops.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../lib/array.c > .depend.array.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../lib/bitmap.c > .depend.bitmap.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../lib/bswap.c > .depend.bswap.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../lib/kgets.c > .depend.kgets.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../lib/kprintf.c > .depend.kprintf.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../lib/misc.c > .depend.misc.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../lib/time.c > .depend.time.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../lib/uio.c > .depend.uio.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../main/main.c > .depend.main.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../main/menu.c > .depend.menu.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../proc/proc.c > .depend.proc.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../syscall/execv_syscall.c > .depend.execv_syscall.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../syscall/fork_syscall.c > .depend.fork_syscall.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../syscall/getpid_syscall.c > .depend.getpid_syscall.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../syscall/loadelf.c > .depend.loadelf.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../syscall/runprogram.c > .depend.runprogram.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../syscall/time_syscalls.c > .depend.time_syscalls.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../test/arraytest.c > .depend.arraytest.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../test/bitmaptest.c > .depend.bitmaptest.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../test/dpt.c > .depend.dpt.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../test/fstest.c > .depend.fstest.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../test/kmalloctest.c > .depend.kmalloctest.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../test/mpt.c > .depend.mpt.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../test/semunit.c > .depend.semunit.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../test/spt.c > .depend.spt.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../test/synchtest.c > .depend.synchtest.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../test/threadlisttest.c > .depend.threadlisttest.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../test/threadtest.c > .depend.threadtest.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../test/tt3.c > .depend.tt3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../thread/clock.c > .depend.clock.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../thread/spinlock.c > .depend.spinlock.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../thread/spl.c > .depend.spl.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../thread/synch.c > .depend.synch.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../thread/thread.c > .depend.thread.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../thread/threadlist.c > .depend.threadlist.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../vfs/device.c > .depend.device.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../vfs/devnull.c > .depend.devnull.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../vfs/vfscwd.c > .depend.vfscwd.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../vfs/vfsfail.c > .depend.vfsfail.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../vfs/vfslist.c > .depend.vfslist.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../vfs/vfslookup.c > .depend.vfslookup.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../vfs/vfspath.c > .depend.vfspath.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../vfs/vnode.c > .depend.vnode.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../vm/kmalloc.c > .depend.kmalloc.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/mips/locore/trap.c > .depend.trap.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/mips/syscall/syscall.c > .depend.syscall.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/mips/thread/cpu.c > .depend.cpu.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/mips/thread/switchframe.c > .depend.switchframe.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/mips/thread/switch.S > .depend.switch.S
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/mips/thread/thread_machdep.c > .depend.thread_machdep.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/mips/thread/threadstart.S > .depend.threadstart.S
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/mips/vm/dumbvm.c > .depend.dumbvm.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/mips/vm/ram.c > .depend.ram.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/adddi3.c > .depend.adddi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/anddi3.c > .depend.anddi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/ashldi3.c > .depend.ashldi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/ashrdi3.c > .depend.ashrdi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/cmpdi2.c > .depend.cmpdi2.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/divdi3.c > .depend.divdi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/iordi3.c > .depend.iordi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/lshldi3.c > .depend.lshldi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/lshrdi3.c > .depend.lshrdi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/moddi3.c > .depend.moddi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/muldi3.c > .depend.muldi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/negdi2.c > .depend.negdi2.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/notdi2.c > .depend.notdi2.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/qdivrem.c > .depend.qdivrem.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/subdi3.c > .depend.subdi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/ucmpdi2.c > .depend.ucmpdi2.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/udivdi3.c > .depend.udivdi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/umoddi3.c > .depend.umoddi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/gcc-millicode/xordi3.c > .depend.xordi3.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../../common/libc/arch/mips/setjmp.S > .depend.setjmp.S
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../vm/copyinout.c > .depend.copyinout.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/mips/locore/cache-mips161.S > .depend.cache-mips161.S
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/mips/locore/exception-mips1.S > .depend.exception-mips1.S
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/mips/vm/tlb-mips161.S > .depend.tlb-mips161.S
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/sys161/dev/lamebus_machdep.c > .depend.lamebus_machdep.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -M ../../arch/sys161/main/start.S > .depend.start.S
+cat .depend.__printf.c .depend.snprintf.c .depend.atoi.c .depend.bzero.c .depend.memcpy.c .depend.memmove.c .depend.memset.c .depend.strcat.c .depend.strchr.c .depend.strcmp.c .depend.strcpy.c .depend.strlen.c .depend.strrchr.c .depend.strtok_r.c .depend.autoconf.c .depend.beep.c .depend.console.c .depend.random.c .depend.rtclock.c .depend.beep_ltimer.c .depend.con_lser.c .depend.emu_att.c .depend.emu.c .depend.lamebus.c .depend.lhd_att.c .depend.lhd.c .depend.lrandom_att.c .depend.lrandom.c .depend.lser_att.c .depend.lser.c .depend.ltimer_att.c .depend.ltimer.c .depend.ltrace_att.c .depend.ltrace.c .depend.random_lrandom.c .depend.rtclock_ltimer.c .depend.semfs_fsops.c .depend.semfs_obj.c .depend.semfs_vnops.c .depend.sfs_balloc.c .depend.sfs_bmap.c .depend.sfs_dir.c .depend.sfs_fsops.c .depend.sfs_inode.c .depend.sfs_io.c .depend.sfs_vnops.c .depend.array.c .depend.bitmap.c .depend.bswap.c .depend.kgets.c .depend.kprintf.c .depend.misc.c .depend.time.c .depend.uio.c .depend.main.c .depend.menu.c .depend.proc.c .depend.execv_syscall.c .depend.fork_syscall.c .depend.getpid_syscall.c .depend.loadelf.c .depend.runprogram.c .depend.time_syscalls.c .depend.arraytest.c .depend.bitmaptest.c .depend.dpt.c .depend.fstest.c .depend.kmalloctest.c .depend.mpt.c .depend.semunit.c .depend.spt.c .depend.synchtest.c .depend.threadlisttest.c .depend.threadtest.c .depend.tt3.c .depend.clock.c .depend.spinlock.c .depend.spl.c .depend.synch.c .depend.thread.c .depend.threadlist.c .depend.device.c .depend.devnull.c .depend.vfscwd.c .depend.vfsfail.c .depend.vfslist.c .depend.vfslookup.c .depend.vfspath.c .depend.vnode.c .depend.kmalloc.c .depend.trap.c .depend.syscall.c .depend.cpu.c .depend.switchframe.c .depend.switch.S .depend.thread_machdep.c .depend.threadstart.S .depend.dumbvm.c .depend.ram.c .depend.adddi3.c .depend.anddi3.c .depend.ashldi3.c .depend.ashrdi3.c .depend.cmpdi2.c .depend.divdi3.c .depend.iordi3.c .depend.lshldi3.c .depend.lshrdi3.c .depend.moddi3.c .depend.muldi3.c .depend.negdi2.c .depend.notdi2.c .depend.qdivrem.c .depend.subdi3.c .depend.ucmpdi2.c .depend.udivdi3.c .depend.umoddi3.c .depend.xordi3.c .depend.setjmp.S .depend.copyinout.c .depend.cache-mips161.S .depend.exception-mips1.S .depend.tlb-mips161.S .depend.lamebus_machdep.c .depend.start.S > .depend
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -c ../../compile/DUMBVM/autoconf.c
+mips-harvard-os161-gcc -g -Wall -W -Wwrite-strings -Wmissing-prototypes -Werror -std=gnu99 -mno-abicalls -fno-pic -ffixed-23 -nostdinc -I../../include -I../../dev -I. -Iincludelinks -ffreestanding -D_KERNEL -c ../../syscall/execv_syscall.c
+*** Error code 1
+
+Stop.
+bmake[1]: stopped in /home/xuxx0987/repo/csci5103/os161/src/kern/compile/DUMBVM
+Mymakefile:18: recipe for target 'b' failed

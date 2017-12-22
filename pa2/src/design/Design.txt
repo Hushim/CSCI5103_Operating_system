@@ -1,0 +1,30 @@
+sys_gitpid(): 
+ 1. Made a pid management in kern/proc/proc.c to allocate pid to entries system process 
+
+sys_execv():
+ 1. We use the function copyinstr copy the filename from usermode to kernel , use for open the file.
+ 2. then , use copyin to create a address space, and copy argv into exist address at the meanwhile.
+ 3. Loads the executable into that address space.
+ 4. Call function as_define_stack to define user stack
+ 5. Reverse pc counter back to execution starting point. 
+sys_exit ():
+ 1. Add a splhigh lock in as_distory.
+ 2. Call thread_exit() to exit current thread.
+ 3. Use the pid manage structure to recycle pid back  
+ 4. Call as_deactivate to deactivate VM space
+ 5. Call as_distory to clean current thread’s VM space.
+
+sys_fork():
+ 1. Create a new process
+ 2. Copy parent’s stack
+ 3. Copy parent’s addrespace
+ 4. Allocate new pid to the new created process
+ 5. Create relation between child and parent process
+ 6. Make the new process run by forking a new thread
+
+sys_waitpid():
+ 1. Validate the pid the parent process is waiting for
+ 2. Search the process in parent process’s children
+ 3. Wait the child to exit by using semaphore
+ 4. Reset child’ process’s exit code and exit_state
+ 5. Return pid

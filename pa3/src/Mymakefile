@@ -1,0 +1,35 @@
+
+export DIR = $(realpath ./../root)
+
+All: config configKern b
+	echo "Fished install"
+
+config:
+	./configure --ostree=$(DIR) && \
+	bmake && \
+	bmake install
+
+configKern:
+	cd ./kern/conf && \
+	./config DUMBVM  && \
+	cd ../../
+
+b:
+	cd ./kern/compile/DUMBVM && \
+	bmake depend && \
+	bmake && \
+	bmake install && \
+	cd ../../../
+
+.PHONY: clean veryclean
+clean:
+	bmake clean
+
+veryclean: clean
+	cd ./kern/compile &&\
+	rm -rf DUMBVM &&\
+	cd ../../
+
+
+
+

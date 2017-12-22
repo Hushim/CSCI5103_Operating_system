@@ -1,0 +1,27 @@
+For all the three parts, we basically maintain two sorted arraylist, 
+the wait queue in wait channel  and the running queue in current cpu.
+To manage the sorted arraylist, we guarantee each thread will be put 
+into the appropriate position to keep the priority of the thread in 
+the running queue or wait channel are in the way of the scheduling 
+algorithm defined. The algorithm( what) we use (implement) is simply 
+one-pass search in(on) the() arraylist to find the right place to insert
+node. So that we can easily access and get the highest priority thread 
+whenever by extracting the first node in the arraylist with O(1) time 
+complexity.
+
+For all the three scheduling algorithm, there are just using one-pass 
+searching and grab the thread with highest(right thread) priority into 
+the running queue. All scheduling algorithm are only applied to running 
+queue since the priority of thread in running queue may change by 
+aging(depend which scheduler you running) but not for waiting queue. 
+
+For PartA and PartB, we implement a function called threadlist_add_inpriority() 
+to insert a thread in a proper position. However, the PartC we implemented another 
+function called threadlist_add_multi_level() to insert threads since threads in 
+PartC are not strictly sorted like A and B. Threads in partC are sorted by interval 
+and for each interval threads are running in rb algorithm.
+
+For aging(), we first implemented a  function called modify_waiting_and_cpu_time() 
+to count cpu-time and waiting-time. Then aging() is called evey time hardclock() is 
+called.  
+

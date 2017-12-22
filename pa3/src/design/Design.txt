@@ -1,0 +1,54 @@
+Coremap:
+	The coremap is basically a inverted table. Each entry indicates the physical address, is_allocated, block_len, timestamp.
+
+Struct coremap_entry {
+Unsigmed block_len;
+Paddr_t paddr;
+Bool is_allocated:1;
+Bool is_pinned:1;
+__u64 timestamp;
+}
+
+Block_len is used to record the number of pages for that address and timestamp is used for FIFO
+ algorithm to select a victim page.
+
+Before the coremap is initialized, it  directly uses steal_ram to allocate a physical address 
+to a virtual page. But the coremap is build, every time it allocates new memory, it will 
+consult the conmap. 
+
+vm_falt:  The vm_fault is consisted of  two main parts. The first part is to check if the
+ fault address is in the region range. While if the fault address does not belong to any 
+legal region, it will return error msg. While the second part is based on the two level 
+page table, if the corresponding address is tagged with swapping out (We didn’t really 
+complete this part, there is some issues in our part), we write if back. If it is still 
+in memory, we directly translate it and write it to TLB.
+
+Page table :
+The implementation of the demain page, we have to change the structure of the 
+addreaspce first, because, the date and text are variy to load int to adddreaspace, 
+in order to do thoes. We need a base address, which could be the first level page 
+table base point, in addition, we may need some others variable to help use to 
+indicate the heap start, end, also for the stack, and an struct array to store 
+in infonnation about the size of each data or text need to how many pages in 
+physical memory to stored. Then once the as_defin_region been call, we will 
+use mask to get first and second level page index, and use those two index 
+to start to modify and structuring our page table based on level one page 
+table base point. 
+
+Page swap:
+1. Open the second storage
+2. We chose another free virtual disk as our second storage, and keep an array
+ of recorders(struct variable we defined), each recode,we save the which pid 
+and vaddr to indicate the recode belong to whcih addreeaspace. For the swap out
+, we will check the the instance already exist and what is offset position in 
+second disk. if yes, we traversal  all arraylist compare the curpoc->t_pid and 
+vaddr, if find one we access that record and return offset index, if did not 
+find we assign one for it meanwhile modify a new record struct and save into 
+arraylist. Then we use uio_init function to init the all info to a structure, 
+the call VOP_WRITE to write into.
+3. For swap in, we check the record in that array list or not , if not return 
+error message, because it should been find in records, however , if we get 
+find the matched record, we init struct, then call VOP_read, load the data into.
+
+
+
